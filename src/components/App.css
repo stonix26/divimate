@@ -1,0 +1,18 @@
+.parent-container {
+  padding: 50px;
+}
+.bg-orange {
+  background-color: rgb(237, 237, 237);
+}
+.bg-dark-blue {
+  background-color: #103D5D;
+}
+.border-blue {
+  border: solid 1px #103D5D;
+  border-radius: 0 !important;
+}
+.btn-custom {
+  background-color: #FA6900;
+  border-radius: 0;
+  border: none;
+}
