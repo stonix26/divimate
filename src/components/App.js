@@ -1,7 +1,29 @@
 import React, { Component } from 'react';
+import firebase from './../firebase';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      authorName: '',
+      serviceType: 'Choose Service...',
+      progressStatus: 'Choose Progress Status...',
+      filePath: '',
+      designer: 'Choose Designer...',
+      amazonLink: '',
+      note: ''
+
+    }
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
   render() {
     return (
       <div className="container-fluid parent-container">
@@ -13,40 +35,78 @@ class App extends Component {
                 <form>
                   <div className="form-group">
                     <label>Author's Name</label>
-                    <input type="text" className="form-control" placeholder="John Doe" />
+                    <input
+                      type="text"
+                      name="authorName"
+                      className="form-control"
+                      placeholder="John Doe"
+                      onChange={this.handleChange}
+                      value={this.state.authorName}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Service Type</label>
-                    <select className="form-control">
+                    <select
+                      name="serviceType"
+                      className="form-control"
+                      onChange={this.handleChange}
+                      value={this.state.serviceType}>
                       <option value="Choose Service...">Choose Service...</option>
                       <option value="...">...</option>
                     </select>
                   </div>
                   <div className="form-group">
                     <label>Progress Status</label>
-                    <select className="form-control">
+                    <select
+                      name="progressStatus"
+                      className="form-control"
+                      onChange={this.handleChange}
+                      value={this.state.progressStatus}>
                       <option value="Choose Progress Status...">Choose Progress Status...</option>
                       <option value="...">...</option>
                     </select>
                   </div>
                   <div className="form-group">
                     <label>File Path</label>
-                    <input type="text" className="form-control" placeholder="\\file02\ReadersMagnet" />
+                    <input type="text"
+                      name="filePath"
+                      className="form-control"
+                      placeholder="\\file02\ReadersMagnet"
+                      onChange={this.handleChange}
+                      value={this.state.filePath}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Designer</label>
-                    <select className="form-control">
+                    <select
+                      name="designer"
+                      className="form-control"
+                      onChange={this.handleChange}
+                      value={this.state.designer}>
                       <option value="Choose Designer...">Choose Designer...</option>
                       <option value="...">...</option>
                     </select>
                   </div>
                   <div className="form-group">
                     <label>Amazon Link</label>
-                    <input type="text" className="form-control" placeholder="https://www.amazon.com/" />
+                    <input
+                      type="text"
+                      name="amazonLink"
+                      className="form-control"
+                      placeholder="https://www.amazon.com/"
+                      onChange={this.handleChange}
+                      value={this.state.amazonLink}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Notes</label>
-                    <textarea className="form-control" rows="6"></textarea>
+                    <textarea
+                      name="notes"
+                      className="form-control"
+                      rows="6"
+                      onChange={this.handleChange}
+                      value={this.state.notes}
+                    />
                   </div>
                   <div className="form-row text-center">
                     <div className="col">
