@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './../firebase';
 import './App.css';
+import { auth } from 'firebase';
 
 class App extends Component {
   constructor() {
@@ -12,7 +13,8 @@ class App extends Component {
       filePath: '',
       designer: 'Choose Designer',
       amazonLink: '',
-      notes: ''
+      notes: '',
+      authors: []
 
     }
     this.handleChange = this.handleChange.bind(this);
@@ -46,6 +48,29 @@ class App extends Component {
       designer: 'Choose Designer',
       amazonLink: '',
       notes: ''
+    });
+  }
+
+  componentDidMount() {
+    const authorsRef = firebase.database().ref('authors');
+    authorsRef.on('value', snapshot => {
+      let authors = snapshot.val();
+      let newState = [];
+      for (let author in authors) {
+        newState.push({
+          id: author,
+          authorName: authors[author].authorName,
+          serviceType: authors[author].serviceType,
+          progressStatus: authors[author].progressStatus,
+          filePath: authors[author].filePath,
+          designer: authors[author].designer,
+          amazonLink: authors[author].amazonLink,
+          notes: authors[author].notes
+        });
+      }
+      this.setState({
+        authors: newState
+      });
     });
   }
 
@@ -159,7 +184,6 @@ class App extends Component {
             <table className="table table-hover">
               <thead className="bg-dark-blue text-white">
                 <tr>
-                  <th scope="col">#</th>
                   <th scope="col">Author's Name</th>
                   <th scope="col">Service Type</th>
                   <th scope="col">Progress Status</th>
@@ -167,58 +191,22 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>John Doe</td>
-                  <td>Basic</td>
-                  <td>Live</td>
-                  <td>
-                    <div className="btn-group btn-group-sm" role="group" aria-label="...">
-                      <button type="button" className="btn btn-secondary">View</button>
-                      <button type="button" className="btn btn-dark">Edit</button>
-                      <button type="button" className="btn btn-secondary">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Larry Byrd</td>
-                  <td>Delux</td>
-                  <td>Live</td>
-                  <td>
-                    <div className="btn-group btn-group-sm" role="group" aria-label="...">
-                      <button type="button" className="btn btn-secondary">View</button>
-                      <button type="button" className="btn btn-dark">Edit</button>
-                      <button type="button" className="btn btn-secondary">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Sam Smith</td>
-                  <td>Silver</td>
-                  <td>Demo</td>
-                  <td>
-                    <div className="btn-group btn-group-sm" role="group" aria-label="...">
-                      <button type="button" className="btn btn-secondary">View</button>
-                      <button type="button" className="btn btn-dark">Edit</button>
-                      <button type="button" className="btn btn-secondary">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>John Skomburdis</td>
-                  <td>Basic</td>
-                  <td>Live</td>
-                  <td>
-                    <div className="btn-group btn-group-sm" role="group" aria-label="...">
-                      <button type="button" className="btn btn-secondary">View</button>
-                      <button type="button" className="btn btn-dark">Edit</button>
-                      <button type="button" className="btn btn-secondary">Delete</button>
-                    </div>
-                  </td>
-                </tr>
+                {this.state.authors.map( author => {
+                  return (
+                    <tr key={author.id}>
+                      <td>{author.authorName}</td>
+                      <td>{author.serviceType}</td>
+                      <td>{author.progressStatus}</td>
+                      <td>
+                        <div className="btn-group btn-group-sm" role="group" aria-label="...">
+                          <button type="button" className="btn btn-secondary">View</button>
+                          <button type="button" className="btn btn-dark">Edit</button>
+                          <button type="button" className="btn btn-secondary">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                } )}
               </tbody>
             </table>
           </div>
