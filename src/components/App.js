@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import firebase from './../firebase';
 import './App.css';
-import { auth } from 'firebase';
 
 class App extends Component {
   constructor() {
@@ -72,6 +71,11 @@ class App extends Component {
         authors: newState
       });
     });
+  }
+
+  removeAuthor(authorId) {
+    const authorsRef = firebase.database().ref(`/authors/${authorId}`);
+    authorsRef.remove();
   }
 
   render() {
@@ -199,9 +203,9 @@ class App extends Component {
                       <td>{author.progressStatus}</td>
                       <td>
                         <div className="btn-group btn-group-sm" role="group" aria-label="...">
-                          <button type="button" className="btn btn-secondary">View</button>
-                          <button type="button" className="btn btn-dark">Edit</button>
-                          <button type="button" className="btn btn-secondary">Delete</button>
+                          <button className="btn btn-secondary">View</button>
+                          <button className="btn btn-dark">Edit</button>
+                          <button onClick={() => this.removeAuthor(author.id)} className="btn btn-secondary">Delete</button>
                         </div>
                       </td>
                     </tr>
