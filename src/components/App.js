@@ -7,20 +7,45 @@ class App extends Component {
     super();
     this.state = {
       authorName: '',
-      serviceType: 'Choose Service...',
-      progressStatus: 'Choose Progress Status...',
+      serviceType: 'Choose Service',
+      progressStatus: 'Choose Progress Status',
       filePath: '',
-      designer: 'Choose Designer...',
+      designer: 'Choose Designer',
       amazonLink: '',
-      note: ''
+      notes: ''
 
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const authorsRef = firebase.database().ref('authors');
+    const author = {
+      authorName: this.state.authorName,
+      serviceType: this.state.serviceType,
+      progressStatus: this.state.progressStatus,
+      filePath: this.state.filePath,
+      designer: this.state.designer,
+      amazonLink: this.state.amazonLink,
+      notes: this.state.notes
+    }
+    authorsRef.push(author);
+    this.setState({
+      authorName: '',
+      serviceType: 'Choose Service',
+      progressStatus: 'Choose Progress Status',
+      filePath: '',
+      designer: 'Choose Designer',
+      amazonLink: '',
+      notes: ''
     });
   }
 
@@ -32,7 +57,7 @@ class App extends Component {
             <div className="card bg-orange border-blue">
               <div className="card-header bg-dark-blue text-white text-center border-blue">Add New Author</div>
               <div className="card-body">
-                <form>
+                <form onSubmit={this.handleSubmit} >
                   <div className="form-group">
                     <label>Author's Name</label>
                     <input
@@ -51,8 +76,15 @@ class App extends Component {
                       className="form-control"
                       onChange={this.handleChange}
                       value={this.state.serviceType}>
-                      <option value="Choose Service...">Choose Service...</option>
-                      <option value="...">...</option>
+                      <option value="Choose Service">Choose Service</option>
+                      <optgroup label="Dynamic Website">Dynamic Website</optgroup>
+                      <option value="Basic">Basic</option>
+                      <option value="Delux">Delux</option>
+                      <option value="Premium">Premium</option>
+                      <optgroup label="OBP">OBP</optgroup>
+                      <option value="Silver">Silver</option>
+                      <option value="Platinum">Platinum</option>
+                      <option value="Gold">Gold</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -62,8 +94,13 @@ class App extends Component {
                       className="form-control"
                       onChange={this.handleChange}
                       value={this.state.progressStatus}>
-                      <option value="Choose Progress Status...">Choose Progress Status...</option>
-                      <option value="...">...</option>
+                      <option value="Choose Progress Status">Choose Progress Status</option>
+                      <option value="Template (Design Draft Creation)">Template (Design Draft Creation)</option>
+                      <option value="Demo (Mockup and Contents Creation)">Demo (Mockup and Contents Creation)</option>
+                      <option value="Live">Live</option>
+                      <option value="Launched">Launched</option>
+                      <option value="End of Service">End of Service</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -83,14 +120,15 @@ class App extends Component {
                       className="form-control"
                       onChange={this.handleChange}
                       value={this.state.designer}>
-                      <option value="Choose Designer...">Choose Designer...</option>
-                      <option value="...">...</option>
+                      <option value="Choose Designer">Choose Designer</option>
+                      <option value="Jess Andrew Muana">Jess Andrew Muana</option>
+                      <option value="Randy Santillan">Randy Santillan</option>
+                      <option value="Roy Ruba">Roy Ruba</option>
                     </select>
                   </div>
                   <div className="form-group">
                     <label>Amazon Link</label>
                     <input
-                      type="text"
                       name="amazonLink"
                       className="form-control"
                       placeholder="https://www.amazon.com/"
@@ -110,7 +148,7 @@ class App extends Component {
                   </div>
                   <div className="form-row text-center">
                     <div className="col">
-                      <button type="submit" className="btn btn-custom text-white">Save Author</button>
+                      <button className="btn btn-custom text-white">Save Author</button>
                     </div>
                   </div>
                 </form>
